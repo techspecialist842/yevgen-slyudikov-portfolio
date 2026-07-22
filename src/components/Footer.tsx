@@ -6,15 +6,21 @@ export default function Footer() {
     <footer className="footer">
       <motion.div
         className="footer__inner"
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
       >
-        <p className="footer__name">{profile.name}</p>
+        <motion.p
+          className="footer__name"
+          whileHover={{ letterSpacing: '0.04em' }}
+          transition={{ duration: 0.3 }}
+        >
+          {profile.name}
+        </motion.p>
         <p className="footer__note">Senior Web Developer · Portfolio</p>
-        <a href="#top" className="footer__top">
+        <motion.a href="#top" className="footer__top" whileHover={{ x: -4 }}>
           Back to top
-        </a>
+        </motion.a>
       </motion.div>
     </footer>
   )

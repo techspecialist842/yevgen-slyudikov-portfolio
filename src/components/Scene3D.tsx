@@ -57,9 +57,9 @@ function OrbitalRing() {
     <mesh ref={ref} position={[1.2, 0.2, -1.5]} rotation={[0.6, 0.2, 0]}>
       <torusGeometry args={[1.8, 0.02, 12, 96]} />
       <meshStandardMaterial
-        color="#7eb8d4"
-        emissive="#2d6a8a"
-        emissiveIntensity={0.35}
+        color="#1fd6c3"
+        emissive="#0f9f91"
+        emissiveIntensity={0.3}
         metalness={0.75}
         roughness={0.25}
       />
@@ -79,11 +79,11 @@ function ParallaxGroup({ mouse }: { mouse: MutableRefObject<{ x: number; y: numb
   const shapes = useMemo(
     () =>
       [
-        { position: [-2.4, 1.1, -1] as [number, number, number], color: '#1f6f8b', scale: 0.9, speed: 1, shape: 'icosahedron' as const },
-        { position: [2.6, -0.4, -0.8] as [number, number, number], color: '#c4a574', scale: 0.7, speed: 1.3, shape: 'torus' as const },
-        { position: [0.2, 1.6, -2] as [number, number, number], color: '#3d8ea8', scale: 0.55, speed: 0.8, shape: 'sphere' as const },
-        { position: [-1.8, -1.2, -0.4] as [number, number, number], color: '#8fb9c9', scale: 0.5, speed: 1.5, shape: 'octahedron' as const },
-        { position: [2.1, 1.4, -1.6] as [number, number, number], color: '#2a5470', scale: 0.45, speed: 1.1, shape: 'icosahedron' as const },
+        { position: [-2.4, 1.1, -1] as [number, number, number], color: '#1fd6c3', scale: 0.9, speed: 1, shape: 'icosahedron' as const },
+        { position: [2.6, -0.4, -0.8] as [number, number, number], color: '#ff6b4a', scale: 0.7, speed: 1.3, shape: 'torus' as const },
+        { position: [0.2, 1.6, -2] as [number, number, number], color: '#4f8cff', scale: 0.55, speed: 0.8, shape: 'sphere' as const },
+        { position: [-1.8, -1.2, -0.4] as [number, number, number], color: '#7ad7ff', scale: 0.5, speed: 1.5, shape: 'octahedron' as const },
+        { position: [2.1, 1.4, -1.6] as [number, number, number], color: '#1a2a3a', scale: 0.45, speed: 1.1, shape: 'icosahedron' as const },
       ] as const,
     [],
   )
@@ -94,7 +94,7 @@ function ParallaxGroup({ mouse }: { mouse: MutableRefObject<{ x: number; y: numb
         <FloatingShape key={shape.color + shape.position.join(',')} {...shape} />
       ))}
       <OrbitalRing />
-      <Sparkles count={36} scale={[10, 6, 4]} size={2.2} speed={0.3} color="#d8e8f0" opacity={0.5} />
+      <Sparkles count={42} scale={[10, 6, 4]} size={2.2} speed={0.35} color="#9ee7de" opacity={0.45} />
     </group>
   )
 }
@@ -102,12 +102,12 @@ function ParallaxGroup({ mouse }: { mouse: MutableRefObject<{ x: number; y: numb
 function SceneContent({ mouse }: { mouse: MutableRefObject<{ x: number; y: number }> }) {
   return (
     <>
-      <color attach="background" args={['#0a1c26']} />
-      <fog attach="fog" args={['#0a1c26', 6, 16]} />
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[4, 6, 3]} intensity={1.15} color="#fff6e8" />
-      <pointLight position={[-4, -2, 2]} intensity={0.75} color="#4ea0c2" />
-      <pointLight position={[3, 2, 4]} intensity={0.5} color="#d2b48c" />
+      <color attach="background" args={['#070b10']} />
+      <fog attach="fog" args={['#070b10', 6, 16]} />
+      <ambientLight intensity={0.45} />
+      <directionalLight position={[4, 6, 3]} intensity={1.1} color="#e8f4ff" />
+      <pointLight position={[-4, -2, 2]} intensity={0.85} color="#1fd6c3" />
+      <pointLight position={[3, 2, 4]} intensity={0.55} color="#ff6b4a" />
       <ParallaxGroup mouse={mouse} />
     </>
   )
@@ -135,7 +135,7 @@ export default function Scene3D() {
           failIfMajorPerformanceCaveat: false,
         }}
         onCreated={({ gl }) => {
-          gl.setClearColor('#0a1c26', 1)
+          gl.setClearColor('#070b10', 1)
         }}
       >
         <Suspense fallback={null}>

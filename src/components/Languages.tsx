@@ -16,7 +16,7 @@ export default function Languages() {
           </motion.p>
           <motion.h2
             className="section__title"
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 28 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
@@ -28,10 +28,11 @@ export default function Languages() {
           {languages.map((lang, i) => (
             <motion.li
               key={lang.name}
-              initial={{ opacity: 0, y: 24 }}
+              initial={{ opacity: 0, y: 28 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.08 }}
+              whileHover={{ x: 4 }}
             >
               <div className="languages__row">
                 <strong>{lang.name}</strong>
@@ -42,7 +43,7 @@ export default function Languages() {
                   initial={{ scaleX: 0 }}
                   whileInView={{ scaleX: lang.percent / 100 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 1.1, delay: 0.15 + i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: 1.15, delay: 0.12 + i * 0.08, ease: [0.22, 1, 0.36, 1] }}
                 />
               </div>
             </motion.li>

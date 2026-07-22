@@ -15,7 +15,7 @@ export default function Experience() {
         </motion.p>
         <motion.h2
           className="section__title"
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 28 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
@@ -27,10 +27,11 @@ export default function Experience() {
             <motion.li
               key={`${job.company}-${job.role}-${job.period}`}
               className="timeline__item"
-              initial={{ opacity: 0, x: index % 2 === 0 ? -36 : 36 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.25 }}
-              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.65, delay: index * 0.04, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={{ x: 6 }}
             >
               <div className="timeline__marker" aria-hidden>
                 <span className={job.current ? 'is-live' : undefined} />
@@ -39,7 +40,15 @@ export default function Experience() {
               <div className="timeline__body">
                 <div className="timeline__meta">
                   <p className="timeline__period">{job.period}</p>
-                  {job.current && <span className="timeline__badge">Current</span>}
+                  {job.current && (
+                    <motion.span
+                      className="timeline__badge"
+                      animate={{ opacity: [0.75, 1, 0.75] }}
+                      transition={{ duration: 2.2, repeat: Infinity }}
+                    >
+                      Current
+                    </motion.span>
+                  )}
                 </div>
                 <h3>{job.role}</h3>
                 <p className="timeline__company">
@@ -52,8 +61,16 @@ export default function Experience() {
                 )}
 
                 <ul>
-                  {job.highlights.map((item) => (
-                    <li key={item}>{item}</li>
+                  {job.highlights.map((item, hi) => (
+                    <motion.li
+                      key={item}
+                      initial={{ opacity: 0, x: 12 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.05 + hi * 0.04 }}
+                    >
+                      {item}
+                    </motion.li>
                   ))}
                 </ul>
               </div>

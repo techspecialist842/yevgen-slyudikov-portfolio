@@ -3,13 +3,14 @@ import { useMemo } from 'react'
 import { coreSkills, skillCloud } from '../data/content'
 
 const featured = [
-  { label: 'React & Next.js', color: '#1f6f8b', detail: 'Component systems, portals, storefronts' },
-  { label: 'WordPress & PHP', color: '#2a5470', detail: 'Themes, WooCommerce, custom workflows' },
-  { label: 'Laravel & APIs', color: '#c4a574', detail: 'Backend services, CRM & payment integrations' },
+  { label: 'React & Next.js', color: '#1FD6C3', detail: 'Component systems, portals, storefronts' },
+  { label: 'WordPress & PHP', color: '#4F8CFF', detail: 'Themes, WooCommerce, custom workflows' },
+  { label: 'Laravel & APIs', color: '#FF6B4A', detail: 'Backend services, CRM & payment integrations' },
 ]
 
 export default function Skills() {
   const marquee = useMemo(() => [...skillCloud, ...skillCloud], [])
+  const marqueeAlt = useMemo(() => [...skillCloud].reverse().concat([...skillCloud].reverse()), [])
 
   return (
     <section className="section skills" id="skills">
@@ -24,7 +25,7 @@ export default function Skills() {
         </motion.p>
         <motion.h2
           className="section__title"
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 28 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
@@ -36,15 +37,16 @@ export default function Skills() {
             <motion.article
               key={item.label}
               className="skills__feature"
-              initial={{ opacity: 0, y: 36 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 40, rotateX: 12 }}
+              whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ delay: i * 0.1 }}
-              whileHover={{ y: -8 }}
+              transition={{ delay: i * 0.12, duration: 0.7 }}
+              whileHover={{ y: -10, transition: { duration: 0.25 } }}
             >
               <div className="skills__orb" style={{ ['--orb' as string]: item.color }}>
                 <span className="skills__orb-shape" aria-hidden />
                 <span className="skills__orb-ring" aria-hidden />
+                <span className="skills__orb-pulse" aria-hidden />
               </div>
               <h3>{item.label}</h3>
               <p>{item.detail}</p>
@@ -56,11 +58,11 @@ export default function Skills() {
           {coreSkills.map((skill, i) => (
             <motion.span
               key={skill}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.03 }}
-              whileHover={{ scale: 1.06 }}
+              transition={{ delay: i * 0.025 }}
+              whileHover={{ y: -3, color: '#0A0F14', backgroundColor: '#1FD6C3' }}
             >
               {skill}
             </motion.span>
@@ -68,16 +70,29 @@ export default function Skills() {
         </div>
       </div>
 
-      <div className="skills__marquee" aria-hidden>
-        <motion.div
-          className="skills__track"
-          animate={{ x: ['0%', '-50%'] }}
-          transition={{ duration: 28, ease: 'linear', repeat: Infinity }}
-        >
-          {marquee.map((skill, i) => (
-            <span key={`${skill}-${i}`}>{skill}</span>
-          ))}
-        </motion.div>
+      <div className="skills__marquees" aria-hidden>
+        <div className="skills__marquee">
+          <motion.div
+            className="skills__track"
+            animate={{ x: ['0%', '-50%'] }}
+            transition={{ duration: 26, ease: 'linear', repeat: Infinity }}
+          >
+            {marquee.map((skill, i) => (
+              <span key={`a-${skill}-${i}`}>{skill}</span>
+            ))}
+          </motion.div>
+        </div>
+        <div className="skills__marquee skills__marquee--alt">
+          <motion.div
+            className="skills__track"
+            animate={{ x: ['-50%', '0%'] }}
+            transition={{ duration: 32, ease: 'linear', repeat: Infinity }}
+          >
+            {marqueeAlt.map((skill, i) => (
+              <span key={`b-${skill}-${i}`}>{skill}</span>
+            ))}
+          </motion.div>
+        </div>
       </div>
     </section>
   )
