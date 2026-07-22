@@ -14,28 +14,27 @@ export default function About() {
     target: ref,
     offset: ['start end', 'end start'],
   })
-  const y = useTransform(scrollYProgress, [0, 1], [80, -80])
-  const opacity = useTransform(scrollYProgress, [0, 0.25, 0.75, 1], [0.35, 1, 1, 0.45])
+  const y = useTransform(scrollYProgress, [0, 1], [50, -50])
 
   return (
     <section className="section about" id="about" ref={ref}>
       <div className="section__inner">
-        <motion.div style={{ y, opacity }} className="about__grid">
+        <motion.div style={{ y }} className="about__grid">
           <div>
             <motion.p
               className="eyebrow"
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 14 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.4 }}
+              viewport={{ once: true }}
             >
               About me
             </motion.p>
             <motion.h2
               className="section__title"
-              initial={{ opacity: 0, y: 36, clipPath: 'inset(0 0 100% 0)' }}
-              whileInView={{ opacity: 1, y: 0, clipPath: 'inset(0 0 0% 0)' }}
-              viewport={{ once: true, amount: 0.4 }}
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
             >
               Reliable full-stack delivery for product teams and growing businesses.
             </motion.h2>
@@ -45,10 +44,10 @@ export default function About() {
             {profile.about.map((paragraph, i) => (
               <motion.p
                 key={paragraph}
-                initial={{ opacity: 0, x: 28 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.5 }}
-                transition={{ delay: 0.1 + i * 0.12, duration: 0.65 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.08 + i * 0.1 }}
               >
                 {paragraph}
               </motion.p>
@@ -58,10 +57,10 @@ export default function About() {
               {stats.map((stat, i) => (
                 <motion.li
                   key={stat.label}
-                  initial={{ opacity: 0, y: 24 }}
+                  initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: 0.2 + i * 0.1 }}
+                  transition={{ delay: 0.15 + i * 0.08 }}
                   whileHover={{ y: -4 }}
                 >
                   <strong>{stat.value}</strong>

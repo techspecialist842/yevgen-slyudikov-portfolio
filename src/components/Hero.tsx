@@ -1,9 +1,6 @@
-import { motion, useMotionTemplate, useMotionValue, useSpring } from 'framer-motion'
-import { lazy, Suspense, useRef, type MouseEvent } from 'react'
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
+import { useEffect, useRef } from 'react'
 import { profile } from '../data/content'
-import ErrorBoundary from './ErrorBoundary'
-
-const Scene3D = lazy(() => import('./Scene3D'))
 
 const first = 'Yevgen'
 const last = 'Slyudikov'
@@ -14,11 +11,11 @@ function LetterReveal({ text, delay = 0 }: { text: string; delay?: number }) {
       {text.split('').map((char, i) => (
         <motion.span
           key={`${char}-${i}`}
-          initial={{ y: '110%', opacity: 0, rotateX: -40 }}
-          animate={{ y: '0%', opacity: 1, rotateX: 0 }}
+          initial={{ y: '120%', opacity: 0 }}
+          animate={{ y: '0%', opacity: 1 }}
           transition={{
             duration: 0.55,
-            delay: delay + i * 0.035,
+            delay: delay + i * 0.03,
             ease: [0.22, 1, 0.36, 1],
           }}
         >
@@ -30,122 +27,102 @@ function LetterReveal({ text, delay = 0 }: { text: string; delay?: number }) {
 }
 
 export default function Hero() {
-  const mediaRef = useRef<HTMLDivElement>(null)
-  const mx = useMotionValue(0)
-  const my = useMotionValue(0)
-  const springX = useSpring(mx, { stiffness: 120, damping: 18 })
-  const springY = useSpring(my, { stiffness: 120, damping: 18 })
-  const transform = useMotionTemplate`perspective(900px) rotateY(${springX}deg) rotateX(${springY}deg)`
+  const sectionRef = useRef<HTMLElement>(null)
+  const mx = useMotionValue(0.5)
+  const my = useMotionValue(0.5)
+  const smoothX = useSpring(mx, { stiffness: 60, damping: 20 })
+  const smoothY = useSpring(my, { stiffness: 60, damping: 20 })
+  const photoX = useTransform(smoothX, [0, 1], ['2%', '-2%'])
+  const photoY = useTransform(smoothY, [0, 1], ['1.5%', '-1.5%'])
+  const shapeX = useTransform(smoothX, [0, 1], [-18, 18])
+  const shapeY = useTransform(smoothY, [0, 1], [12, -12])
 
-  const onMove = (e: MouseEvent<HTMLDivElement>) => {
-    const el = mediaRef.current
+  useEffect(() => {
+    const el = sectionRef.current
     if (!el) return
-    const rect = el.getBoundingClientRect()
-    const px = (e.clientX - rect.left) / rect.width - 0.5
-    const py = (e.clientY - rect.top) / rect.height - 0.5
-    mx.set(px * 10)
-    my.set(py * -8)
-  }
-
-  const onLeave = () => {
-    mx.set(0)
-    my.set(0)
-  }
+    const onMove = (e: PointerEvent) => {
+      const rect = el.getBoundingClientRect()
+      mx.set((e.clientX - rect.left) / rect.width)
+      my.set((e.clientY - rect.top) / rect.height)
+    }
+    el.addEventListener('pointermove', onMove)
+    return () => el.removeEventListener('pointermove', onMove)
+  }, [mx, my])
 
   return (
-    <section className="hero" id="top">
-      <div className="hero__scene">
-        <div className="hero__scene-fallback" aria-hidden />
-        <ErrorBoundary fallback={null}>
-          <Suspense fallback={null}>
-            <Scene3D />
-          </Suspense>
-        </ErrorBoundary>
+    <section className="hero" id="top" ref={sectionRef}>
+      <div className="hero__photo">
+        <motion.img
+          src={`${import.meta.env.BASE_URL}avatar.png`}
+          alt="Yevgen Slyudikov"
+          style={{ x: photoX, y: photoY, scale: 1.08 }}
+          width={960}
+          height={960}
+          decoding="async"
+          fetchPriority="high"
+        />
+        <div className="hero__photo-shade" />
       </div>
 
-      <div className="hero__veil" />
-      <div className="hero__beam" aria-hidden />
-
-      <motion.div
-        className="hero__media"
-        initial={{ opacity: 0, scale: 0.92 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1.1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-      >
+      <div className="hero__panel">
         <motion.div
-          ref={mediaRef}
-          className="hero__media-inner"
-          style={{ transform }}
-          onMouseMove={onMove}
-          onMouseLeave={onLeave}
+          className="hero__shapes"
+          aria-hidden
+          style={{ x: shapeX, y: shapeY }}
         >
-          <motion.div
-            className="hero__media-ring"
-            aria-hidden
-            animate={{ rotate: 360 }}
-            transition={{ duration: 24, ease: 'linear', repeat: Infinity }}
-          />
-          <img
-            src={`${import.meta.env.BASE_URL}avatar.png`}
-            alt="Yevgen Slyudikov"
-            width={960}
-            height={960}
-            decoding="async"
-            fetchPriority="high"
-          />
+          <span className="hero__shape hero__shape--a" />
+          <span className="hero__shape hero__shape--b" />
+          <span className="hero__shape hero__shape--c" />
         </motion.div>
-      </motion.div>
 
-      <div className="hero__content">
         <motion.p
           className="hero__role"
-          initial={{ opacity: 0, x: -24 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.7, delay: 0.05 }}
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
         >
-          <motion.span
-            className="hero__role-dot"
-            animate={{ scale: [1, 1.35, 1], opacity: [0.7, 1, 0.7] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          />
-          {profile.title} · {profile.location}
+          {profile.title}
+          <span>Ukraine</span>
         </motion.p>
 
         <h1 className="hero__name">
           <span className="hero__name-line">
-            <LetterReveal text={first} delay={0.12} />
+            <LetterReveal text={first} delay={0.08} />
           </span>
-          <span className="hero__name-line hero__name-line--accent">
-            <LetterReveal text={last} delay={0.28} />
+          <span className="hero__name-line">
+            <LetterReveal text={last} delay={0.22} />
           </span>
         </h1>
 
-        <motion.div
-          className="hero__rule"
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ duration: 0.9, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
-        />
-
         <motion.p
           className="hero__tagline"
-          initial={{ opacity: 0, y: 22 }}
+          initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.75, delay: 0.5 }}
+          transition={{ delay: 0.45, duration: 0.7 }}
         >
           {profile.tagline}
         </motion.p>
 
         <motion.div
           className="hero__actions"
-          initial={{ opacity: 0, y: 18 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.62 }}
+          transition={{ delay: 0.58, duration: 0.65 }}
         >
-          <motion.a className="btn btn--primary" href="#experience" whileHover={{ y: -3, scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+          <motion.a
+            className="btn btn--primary"
+            href="#experience"
+            whileHover={{ y: -3 }}
+            whileTap={{ scale: 0.98 }}
+          >
             View experience
           </motion.a>
-          <motion.a className="btn btn--ghost" href="#skills" whileHover={{ y: -3, scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+          <motion.a
+            className="btn btn--secondary"
+            href="#skills"
+            whileHover={{ y: -3 }}
+            whileTap={{ scale: 0.98 }}
+          >
             Explore skills
           </motion.a>
         </motion.div>
@@ -156,7 +133,7 @@ export default function Hero() {
         className="hero__scroll"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1 }}
+        transition={{ delay: 0.9 }}
       >
         <span>Scroll</span>
         <i />

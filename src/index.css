@@ -1,20 +1,19 @@
 :root {
-  --bg: #e8eef4;
-  --bg-deep: #070b10;
-  --surface: #f3f7fb;
-  --ink: #0d1520;
-  --ink-soft: #5b6b7c;
-  --line: rgba(13, 21, 32, 0.1);
-  --accent: #1fd6c3;
-  --accent-deep: #0f9f91;
-  --signal: #4f8cff;
-  --coral: #ff6b4a;
-  --mist: #9eb6c8;
-  --white: #f4f8fc;
-  --font-display: 'Space Grotesk', sans-serif;
-  --font-body: 'Plus Jakarta Sans', sans-serif;
-  --max: 1120px;
-  --pad: clamp(1.25rem, 4vw, 2.75rem);
+  --bg: #eef1f6;
+  --bg-warm: #f7f8fb;
+  --surface: #ffffff;
+  --ink: #10141c;
+  --ink-soft: #5c6678;
+  --line: rgba(16, 20, 28, 0.1);
+  --accent: #c6f135;
+  --accent-ink: #10141c;
+  --signal: #2f6bff;
+  --deep: #121821;
+  --mist: #d7dde8;
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'Manrope', sans-serif;
+  --max: 1180px;
+  --pad: clamp(1.25rem, 4vw, 3rem);
   color: var(--ink);
   background: var(--bg);
   font-family: var(--font-body);
@@ -79,6 +78,6 @@ ol {
 }
 
 ::selection {
-  background: rgba(31, 214, 195, 0.28);
+  background: rgba(198, 241, 53, 0.45);
   color: var(--ink);
 }
