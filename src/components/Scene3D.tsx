@@ -102,8 +102,8 @@ function ParallaxGroup({ mouse }: { mouse: MutableRefObject<{ x: number; y: numb
 function SceneContent({ mouse }: { mouse: MutableRefObject<{ x: number; y: number }> }) {
   return (
     <>
-      <color attach="background" args={['#071822']} />
-      <fog attach="fog" args={['#071822', 6, 16]} />
+      <color attach="background" args={['#0a1c26']} />
+      <fog attach="fog" args={['#0a1c26', 6, 16]} />
       <ambientLight intensity={0.5} />
       <directionalLight position={[4, 6, 3]} intensity={1.15} color="#fff6e8" />
       <pointLight position={[-4, -2, 2]} intensity={0.75} color="#4ea0c2" />
@@ -135,7 +135,7 @@ export default function Scene3D() {
           failIfMajorPerformanceCaveat: false,
         }}
         onCreated={({ gl }) => {
-          gl.setClearColor('#071822', 1)
+          gl.setClearColor('#0a1c26', 1)
         }}
       >
         <Suspense fallback={null}>
