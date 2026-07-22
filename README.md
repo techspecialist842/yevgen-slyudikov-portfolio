@@ -29,12 +29,11 @@ npm run build
 npm run preview
 ```
 
-## Live site
+## Live sites
 
-After the first GitHub Actions deploy:
+- GitHub Pages: https://techspecialist842.github.io/yevgen-slyudikov-portfolio/
+- Vercel: deploy from this repo (uses `base: '/'` automatically)
 
-https://techspecialist842.github.io/yevgen-slyudikov-portfolio/
+## Deploy notes
 
-## GitHub Pages
-
-Configured with `base: '/yevgen-slyudikov-portfolio/'` and a workflow at `.github/workflows/deploy.yml`. In the repo settings, set **Pages → Source** to **GitHub Actions**.
+`vite.config.ts` sets `base` to `/yevgen-slyudikov-portfolio/` only in GitHub Actions. Local and Vercel builds use `/`, so asset paths resolve correctly on both hosts.
