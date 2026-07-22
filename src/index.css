@@ -87,6 +87,7 @@ ol {
 
 #root {
   min-height: 100vh;
+  background: #071822;
 }
 
 ::selection {

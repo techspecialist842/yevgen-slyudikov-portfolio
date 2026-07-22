@@ -1,5 +1,5 @@
 import { Canvas, useFrame } from '@react-three/fiber'
-import { Float, MeshDistortMaterial, Sparkles } from '@react-three/drei'
+import { Float, Sparkles } from '@react-three/drei'
 import { Suspense, useMemo, useRef, type MutableRefObject } from 'react'
 import type { Group, Mesh } from 'three'
 import * as THREE from 'three'
@@ -26,20 +26,18 @@ function FloatingShape({
   })
 
   return (
-    <Float speed={1.4 + speed} rotationIntensity={0.6} floatIntensity={1.2}>
+    <Float speed={1.4 + speed} rotationIntensity={0.55} floatIntensity={1.1}>
       <mesh ref={mesh} position={position} scale={scale}>
-        {shape === 'torus' && <torusGeometry args={[0.55, 0.18, 32, 64]} />}
-        {shape === 'sphere' && <sphereGeometry args={[0.55, 48, 48]} />}
+        {shape === 'torus' && <torusGeometry args={[0.55, 0.18, 24, 48]} />}
+        {shape === 'sphere' && <sphereGeometry args={[0.55, 32, 32]} />}
         {shape === 'octahedron' && <octahedronGeometry args={[0.7, 0]} />}
         {shape === 'icosahedron' && <icosahedronGeometry args={[0.65, 0]} />}
-        <MeshDistortMaterial
+        <meshStandardMaterial
           color={color}
           transparent
-          opacity={0.85}
-          roughness={0.15}
-          metalness={0.55}
-          distort={0.28}
-          speed={2}
+          opacity={0.88}
+          roughness={0.25}
+          metalness={0.45}
         />
       </mesh>
     </Float>
@@ -57,8 +55,14 @@ function OrbitalRing() {
 
   return (
     <mesh ref={ref} position={[1.2, 0.2, -1.5]} rotation={[0.6, 0.2, 0]}>
-      <torusGeometry args={[1.8, 0.02, 16, 120]} />
-      <meshStandardMaterial color="#7eb8d4" emissive="#2d6a8a" emissiveIntensity={0.4} metalness={0.8} roughness={0.2} />
+      <torusGeometry args={[1.8, 0.02, 12, 96]} />
+      <meshStandardMaterial
+        color="#7eb8d4"
+        emissive="#2d6a8a"
+        emissiveIntensity={0.35}
+        metalness={0.75}
+        roughness={0.25}
+      />
     </mesh>
   )
 }
@@ -90,7 +94,7 @@ function ParallaxGroup({ mouse }: { mouse: MutableRefObject<{ x: number; y: numb
         <FloatingShape key={shape.color + shape.position.join(',')} {...shape} />
       ))}
       <OrbitalRing />
-      <Sparkles count={48} scale={[10, 6, 4]} size={2.5} speed={0.35} color="#d8e8f0" opacity={0.55} />
+      <Sparkles count={36} scale={[10, 6, 4]} size={2.2} speed={0.3} color="#d8e8f0" opacity={0.5} />
     </group>
   )
 }
@@ -100,10 +104,10 @@ function SceneContent({ mouse }: { mouse: MutableRefObject<{ x: number; y: numbe
     <>
       <color attach="background" args={['#071822']} />
       <fog attach="fog" args={['#071822', 6, 16]} />
-      <ambientLight intensity={0.45} />
-      <directionalLight position={[4, 6, 3]} intensity={1.2} color="#fff6e8" />
-      <pointLight position={[-4, -2, 2]} intensity={0.8} color="#4ea0c2" />
-      <pointLight position={[3, 2, 4]} intensity={0.55} color="#d2b48c" />
+      <ambientLight intensity={0.5} />
+      <directionalLight position={[4, 6, 3]} intensity={1.15} color="#fff6e8" />
+      <pointLight position={[-4, -2, 2]} intensity={0.75} color="#4ea0c2" />
+      <pointLight position={[3, 2, 4]} intensity={0.5} color="#d2b48c" />
       <ParallaxGroup mouse={mouse} />
     </>
   )
@@ -121,7 +125,19 @@ export default function Scene3D() {
         mouse.current.y = -(((e.clientY - rect.top) / rect.height) * 2 - 1)
       }}
     >
-      <Canvas camera={{ position: [0, 0, 5.2], fov: 45 }} dpr={[1, 1.5]}>
+      <Canvas
+        camera={{ position: [0, 0, 5.2], fov: 45 }}
+        dpr={[1, 1.5]}
+        gl={{
+          alpha: false,
+          antialias: true,
+          powerPreference: 'high-performance',
+          failIfMajorPerformanceCaveat: false,
+        }}
+        onCreated={({ gl }) => {
+          gl.setClearColor('#071822', 1)
+        }}
+      >
         <Suspense fallback={null}>
           <SceneContent mouse={mouse} />
         </Suspense>

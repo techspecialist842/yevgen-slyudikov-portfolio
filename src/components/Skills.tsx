@@ -1,40 +1,6 @@
-import { Float, MeshDistortMaterial } from '@react-three/drei'
-import { Canvas, useFrame } from '@react-three/fiber'
 import { motion } from 'framer-motion'
-import { Suspense, useMemo, useRef } from 'react'
-import type { Mesh } from 'three'
+import { useMemo } from 'react'
 import { coreSkills, skillCloud } from '../data/content'
-
-function SkillOrb({ color }: { color: string }) {
-  const ref = useRef<Mesh>(null)
-  useFrame((state) => {
-    if (!ref.current) return
-    ref.current.rotation.y = state.clock.elapsedTime * 0.4
-    ref.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.5) * 0.3
-  })
-
-  return (
-    <Float speed={2} floatIntensity={1.4}>
-      <mesh ref={ref} scale={1.35}>
-        <icosahedronGeometry args={[1, 0]} />
-        <MeshDistortMaterial color={color} distort={0.35} speed={2.2} metalness={0.6} roughness={0.2} />
-      </mesh>
-    </Float>
-  )
-}
-
-function MiniScene({ color }: { color: string }) {
-  return (
-    <Canvas camera={{ position: [0, 0, 3.4], fov: 40 }} dpr={[1, 1.5]}>
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[2, 3, 2]} intensity={1.1} />
-      <pointLight position={[-2, -1, 2]} intensity={0.6} color="#7eb8d4" />
-      <Suspense fallback={null}>
-        <SkillOrb color={color} />
-      </Suspense>
-    </Canvas>
-  )
-}
 
 const featured = [
   { label: 'React & Next.js', color: '#1f6f8b', detail: 'Component systems, portals, storefronts' },
@@ -76,8 +42,9 @@ export default function Skills() {
               transition={{ delay: i * 0.1 }}
               whileHover={{ y: -8 }}
             >
-              <div className="skills__orb">
-                <MiniScene color={item.color} />
+              <div className="skills__orb" style={{ ['--orb' as string]: item.color }}>
+                <span className="skills__orb-shape" aria-hidden />
+                <span className="skills__orb-ring" aria-hidden />
               </div>
               <h3>{item.label}</h3>
               <p>{item.detail}</p>
